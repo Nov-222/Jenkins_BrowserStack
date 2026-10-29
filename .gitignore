@@ -1,0 +1,17 @@
+# Dependencias de Node.js
+node_modules/
+
+# Resultados y reportes locales de Allure y pruebas
+allure-results/
+allure-report/
+
+# Logs y archivos temporales de ejecución
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
