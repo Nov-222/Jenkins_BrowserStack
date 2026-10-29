@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Asegúrate de que en Jenkins hayas creado unas credenciales de tipo 
-        // "Secret text" o "Username with password" con este ID exacto: 'browserstack-credentials'
         BROWSERSTACK_AUTH = credentials('browserstack-credentials')
     }
 
@@ -29,9 +27,8 @@ pipeline {
                     "BROWSERSTACK_USERNAME=${env.BROWSERSTACK_AUTH_USR}",
                     "BROWSERSTACK_ACCESS_KEY=${env.BROWSERSTACK_AUTH_PSW}"
                 ]) {
-                    // Usamos catchError para que si una prueba falla, el pipeline 
-                    // no se detenga de golpe y alcance a generar el reporte Allure
-                    catchError(buildResult: 'FAILURE', societalResult: 'SUCCESS') {
+                    // Corrección aquí: cambiamos 'societalResult' por 'stageResult'
+                    catchError(buildResult: 'FAILURE', stageResult: 'SUCCESS') {
                         sh 'npm test'
                     }
                 }
@@ -49,7 +46,6 @@ pipeline {
     post {
         always {
             echo 'Publicando reporte Allure en Jenkins...'
-            // Requiere tener instalado el "Allure Jenkins Plugin" en tu servidor Jenkins
             allure includeProperties: false,
                    jdk: '',
                    results: [[path: 'allure-results']]
