@@ -16,7 +16,7 @@ pipeline {
         stage('2. Instalar Dependencias') {
             steps {
                 echo 'Instalando módulos de Node.js (con compatibilidad de versiones)...'
-                sh 'npm install --legacy-peer-deps'
+                bat 'npm install --legacy-peer-deps'
             }
         }
 
@@ -27,9 +27,8 @@ pipeline {
                     "BROWSERSTACK_USERNAME=${env.BROWSERSTACK_AUTH_USR}",
                     "BROWSERSTACK_ACCESS_KEY=${env.BROWSERSTACK_AUTH_PSW}"
                 ]) {
-                    // Corrección aquí: cambiamos 'societalResult' por 'stageResult'
                     catchError(buildResult: 'FAILURE', stageResult: 'SUCCESS') {
-                        sh 'npm test'
+                        bat 'npm test'
                     }
                 }
             }
@@ -38,7 +37,7 @@ pipeline {
         stage('4. Generar Reporte Allure') {
             steps {
                 echo 'Generando archivos de resultados para Allure...'
-                sh 'npm run allure:generate'
+                bat 'npm run allure:generate'
             }
         }
     }
